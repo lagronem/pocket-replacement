@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pocket Replacement</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="logo">📚 My Library</h1>
+        <div class="search-container">
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Search your saved items..."
+          />
+        </div>
+        <div class="header-actions">
+          <button id="addItemBtn" class="btn btn-primary">+ Add Item</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <h3>Filters</h3>
+          <ul class="filter-list">
+            <li><a href="#" class="filter-link active" data-filter="all">All Items</a></li>
+            <li><a href="#" class="filter-link" data-filter="favorite">Favorites</a></li>
+            <li><a href="#" class="filter-link" data-filter="archived">Archived</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-section">
+          <h3>Type</h3>
+          <ul class="filter-list">
+            <li><a href="#" class="type-link" data-type="">All Types</a></li>
+            <li><a href="#" class="type-link" data-type="url">URLs</a></li>
+            <li><a href="#" class="type-link" data-type="note">Notes</a></li>
+            <li><a href="#" class="type-link" data-type="screenshot">Screenshots</a></li>
+            <li><a href="#" class="type-link" data-type="image">Images</a></li>
+            <li><a href="#" class="type-link" data-type="pdf">PDFs</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="tags-header">
+            <h3>Tags</h3>
+            <button id="addTagBtn" class="btn-icon" title="Add tag">+</button>
+          </div>
+          <div id="tagsList" class="tags-list">
+            <!-- Tags will be loaded here -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="content">
+        <div class="content-header">
+          <div class="view-controls">
+            <button id="gridViewBtn" class="view-btn active" title="Grid view">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <rect x="2" y="2" width="7" height="7"/>
+                <rect x="11" y="2" width="7" height="7"/>
+                <rect x="2" y="11" width="7" height="7"/>
+                <rect x="11" y="11" width="7" height="7"/>
+              </svg>
+            </button>
+            <button id="listViewBtn" class="view-btn" title="List view">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <rect x="2" y="3" width="16" height="2"/>
+                <rect x="2" y="9" width="16" height="2"/>
+                <rect x="2" y="15" width="16" height="2"/>
+              </svg>
+            </button>
+          </div>
+          <div class="sort-controls">
+            <select id="sortSelect" class="sort-select">
+              <option value="date-desc">Newest First</option>
+              <option value="date-asc">Oldest First</option>
+              <option value="title-asc">Title A-Z</option>
+              <option value="title-desc">Title Z-A</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Items Grid/List -->
+        <div id="itemsContainer" class="items-grid">
+          <!-- Items will be loaded here -->
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+          <div class="spinner"></div>
+          <p>Loading...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+          <p>No items found. Start saving interesting things!</p>
+          <button class="btn btn-primary" onclick="document.getElementById('addItemBtn').click()">Add Your First Item</button>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="pagination" style="display: none;"></div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add Item Modal -->
+  <div id="addItemModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add New Item</h2>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="tab-buttons">
+          <button class="tab-btn active" data-tab="url">URL</button>
+          <button class="tab-btn" data-tab="note">Note</button>
+          <button class="tab-btn" data-tab="file">File Upload</button>
+        </div>
+
+        <!-- URL Tab -->
+        <div id="urlTab" class="tab-content active">
+          <div class="form-group">
+            <label for="urlInput">URL</label>
+            <input type="url" id="urlInput" placeholder="https://example.com/article" class="form-input">
+          </div>
+          <div class="form-group">
+            <label for="urlTags">Tags (comma-separated)</label>
+            <input type="text" id="urlTags" placeholder="article, technology" class="form-input">
+          </div>
+          <button id="saveUrlBtn" class="btn btn-primary btn-block">Save URL</button>
+        </div>
+
+        <!-- Note Tab -->
+        <div id="noteTab" class="tab-content">
+          <div class="form-group">
+            <label for="noteTitle">Title</label>
+            <input type="text" id="noteTitle" placeholder="Note title" class="form-input">
+          </div>
+          <div class="form-group">
+            <label for="noteContent">Content</label>
+            <textarea id="noteContent" placeholder="Write your note here..." class="form-textarea" rows="8"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="noteTags">Tags (comma-separated)</label>
+            <input type="text" id="noteTags" placeholder="personal, ideas" class="form-input">
+          </div>
+          <button id="saveNoteBtn" class="btn btn-primary btn-block">Save Note</button>
+        </div>
+
+        <!-- File Upload Tab -->
+        <div id="fileTab" class="tab-content">
+          <div class="form-group">
+            <label for="fileInput">Choose File</label>
+            <input type="file" id="fileInput" accept=".pdf,image/*" class="form-input">
+            <p class="form-hint">Supported: PDF, Images (PNG, JPG, GIF, WebP)</p>
+          </div>
+          <div class="form-group">
+            <label for="fileTitle">Title (optional)</label>
+            <input type="text" id="fileTitle" placeholder="Will use filename if empty" class="form-input">
+          </div>
+          <div class="form-group">
+            <label for="fileTags">Tags (comma-separated)</label>
+            <input type="text" id="fileTags" placeholder="documents, resources" class="form-input">
+          </div>
+          <button id="saveFileBtn" class="btn btn-primary btn-block">Upload File</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Item Detail Modal -->
+  <div id="itemModal" class="modal">
+    <div class="modal-content modal-large">
+      <div class="modal-header">
+        <h2 id="itemTitle"></h2>
+        <div class="modal-actions">
+          <button id="toggleFavoriteBtn" class="btn-icon" title="Toggle favorite">⭐</button>
+          <button id="deleteItemBtn" class="btn-icon" title="Delete">🗑️</button>
+          <button class="modal-close">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div id="itemContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/components/item-list.js"></script>
+  <script src="/js/components/item-detail.js"></script>
+  <script src="/js/components/search-bar.js"></script>
+  <script src="/js/components/tag-manager.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

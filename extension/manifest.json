@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Pocket Saver",
+  "version": "1.0.0",
+  "description": "Save interesting things to your local Pocket replacement",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "scripting",
+    "notifications"
+  ],
+  "host_permissions": [
+    "http://localhost:3000/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "service_worker": "background/service-worker.js"
+  }
+}

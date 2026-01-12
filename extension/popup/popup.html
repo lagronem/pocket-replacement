@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pocket Saver</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="header">
+      <h1>📚 Pocket Saver</h1>
+      <div id="serverStatus" class="status-indicator"></div>
+    </div>
+
+    <div id="errorMessage" class="error-message" style="display: none;"></div>
+    <div id="successMessage" class="success-message" style="display: none;"></div>
+
+    <div class="actions">
+      <button id="savePageBtn" class="btn btn-primary">
+        <span class="btn-icon">🔖</span>
+        Save This Page
+      </button>
+
+      <button id="saveScreenshotBtn" class="btn btn-secondary">
+        <span class="btn-icon">📸</span>
+        Save Screenshot
+      </button>
+
+      <button id="saveNoteBtn" class="btn btn-secondary">
+        <span class="btn-icon">📝</span>
+        Quick Note
+      </button>
+    </div>
+
+    <div id="noteForm" class="form-section" style="display: none;">
+      <div class="form-group">
+        <label for="noteTitle">Title</label>
+        <input type="text" id="noteTitle" placeholder="Note title" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label for="noteContent">Content</label>
+        <textarea id="noteContent" placeholder="Write your note..." class="form-textarea" rows="4"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="noteTags">Tags (comma-separated)</label>
+        <input type="text" id="noteTags" placeholder="tag1, tag2" class="form-input">
+      </div>
+
+      <div class="form-actions">
+        <button id="saveNoteSubmitBtn" class="btn btn-primary btn-small">Save</button>
+        <button id="cancelNoteBtn" class="btn btn-secondary btn-small">Cancel</button>
+      </div>
+    </div>
+
+    <div id="tagsSection" class="form-section">
+      <div class="form-group">
+        <label for="quickTags">Quick Tags</label>
+        <input type="text" id="quickTags" placeholder="Add tags..." class="form-input">
+        <p class="form-hint">Tags will be added to saved items</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="http://localhost:3000" target="_blank" class="footer-link">Open Library</a>
+    </div>
+  </div>
+
+  <script src="../utils/api-client.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

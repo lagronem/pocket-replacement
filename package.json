@@ -1,0 +1,28 @@
+{
+  "name": "pocket-replacement",
+  "version": "1.0.0",
+  "description": "Local-first read-it-later app with Chrome extension",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "init-db": "node backend/config/init-database.js"
+  },
+  "keywords": ["pocket", "read-later", "bookmarks"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.7",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "jsdom": "^23.2.0",
+    "@mozilla/readability": "^0.5.0",
+    "pdf-parse": "^1.1.1",
+    "sharp": "^0.33.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Page</title>
+</head>
+<body>
+  <h1>Test Page Loaded</h1>
+  <div id="result">Waiting...</div>
+
+  <script>
+    console.log('Inline script working!');
+    document.getElementById('result').textContent = 'JavaScript is working!';
+
+    // Test API call
+    fetch('/api/items')
+      .then(r => r.json())
+      .then(data => {
+        console.log('Items:', data);
+        document.getElementById('result').textContent = 'Found ' + data.items.length + ' items in database!';
+      })
+      .catch(err => {
+        console.error('API Error:', err);
+        document.getElementById('result').textContent = 'API Error: ' + err.message;
+      });
+  </script>
+</body>
+</html>
