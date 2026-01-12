@@ -2,7 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const FILES_BASE_PATH = path.join(__dirname, '../../data/files');
+// Use /tmp for production or local data directory for development
+const FILES_BASE_PATH = process.env.NODE_ENV === 'production'
+  ? '/tmp/files'
+  : path.join(__dirname, '../../data/files');
 
 // Ensure all file directories exist
 function ensureDirectories() {
