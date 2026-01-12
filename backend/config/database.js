@@ -1,4 +1,4 @@
-const sqlite3 = require('sqlite3').verbose();
+const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
 
@@ -13,47 +13,46 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-// Create a promise to track initialization
-let dbReady = null;
-
-// Initialize database
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('Error opening database:', err);
-  } else {
-    console.log('Connected to SQLite database');
-  }
-});
+// Initialize database (better-sqlite3 is synchronous)
+const db = new Database(dbPath);
 
 // Enable WAL mode for better concurrency
-db.run('PRAGMA journal_mode = WAL');
-db.run('PRAGMA foreign_keys = ON');
+db.pragma('journal_mode = WAL');
+db.pragma('foreign_keys = ON');
 
-// Promisify database methods for easier use
+console.log('Connected to SQLite database');
+
+// Promisify for compatibility with existing async code
 db.runAsync = function(sql, params = []) {
   return new Promise((resolve, reject) => {
-    this.run(sql, params, function(err) {
-      if (err) reject(err);
-      else resolve(this);
-    });
+    try {
+      const result = this.prepare(sql).run(params);
+      resolve(result);
+    } catch (err) {
+      reject(err);
+    }
   });
 };
 
 db.getAsync = function(sql, params = []) {
   return new Promise((resolve, reject) => {
-    this.get(sql, params, (err, row) => {
-      if (err) reject(err);
-      else resolve(row);
-    });
+    try {
+      const row = this.prepare(sql).get(params);
+      resolve(row);
+    } catch (err) {
+      reject(err);
+    }
   });
 };
 
 db.allAsync = function(sql, params = []) {
   return new Promise((resolve, reject) => {
-    this.all(sql, params, (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
+    try {
+      const rows = this.prepare(sql).all(params);
+      resolve(rows);
+    } catch (err) {
+      reject(err);
+    }
   });
 };
 
@@ -174,7 +173,7 @@ async function initializeSchema() {
 }
 
 // Initialize and export as a promise
-dbReady = initializeSchema();
+const dbReady = initializeSchema();
 
 db.ready = () => dbReady;
 
