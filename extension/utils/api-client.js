@@ -1,6 +1,6 @@
 // API client for Chrome extension
 
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = 'https://pocket-replacement.onrender.com/api';
 
 const apiClient = {
   async checkHealth() {
