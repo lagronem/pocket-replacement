@@ -1,6 +1,9 @@
 // API Client for communicating with backend
 
-const API_BASE = 'http://localhost:3000/api';
+// Use environment-aware API base URL
+const API_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:3000/api'
+  : `${window.location.origin}/api`;
 
 const api = {
   // Items
