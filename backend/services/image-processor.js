@@ -1,7 +1,19 @@
-const sharp = require('sharp');
+// Try to load sharp, but make it optional
+let sharp;
+try {
+  sharp = require('sharp');
+} catch (err) {
+  console.warn('Sharp not available, image processing will be skipped:', err.message);
+}
 
 // Process image: optimize and create thumbnail
 async function processImage(buffer, options = {}) {
+  // Skip processing if sharp is not available
+  if (!sharp) {
+    console.log('Image processing skipped (sharp not available)');
+    return buffer;
+  }
+
   try {
     const {
       maxWidth = 1920,
