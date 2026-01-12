@@ -26,8 +26,13 @@ console.log('Connected to SQLite database');
 db.runAsync = function(sql, params = []) {
   return new Promise((resolve, reject) => {
     try {
-      const result = this.prepare(sql).run(params);
-      resolve(result);
+      const stmt = this.prepare(sql);
+      const result = stmt.run(params);
+      // Map better-sqlite3 result to match sqlite3 API
+      resolve({
+        lastID: result.lastInsertRowid,
+        changes: result.changes
+      });
     } catch (err) {
       reject(err);
     }
